@@ -1,96 +1,84 @@
 import "dotenv/config";
 import express from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
 import knex from "./database_client.js";
 import nestedRouter from "./routers/nested.js";
 
+
+const currentDateTime = () => new Date().toISOString();
+
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-
-const handleNoData = (req, res, next) => {
-  if (req.data && req.data.length === 0) {
-    return res.status(404).json({ message: "No meals found" });
-  }
-  next();
-};
-
-const errorHandler = (err, req, res, next) => {
-  console.error("Error:", err.message);
-  res.status(err.status || 500).json({ error: err.message });
-};
 
 const apiRouter = express.Router();
 
+// Route 1: /future-meals
 app.get("/future-meals", async (req, res) => {
   try {
-    const now = new Date().toISOString();
-    const futureMeals = await knex("meal").where("when", ">", now);
-    res.json(futureMeals);
+    const futureMeals = await knex.raw("SELECT * FROM Meal WHERE `when` > ?", [
+      currentDateTime(),
+    ]);
+    res.json(futureMeals[0]); // Return the rows
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: "An error occurred" });
   }
 });
+
+// Route 2: /past-meals
 app.get("/past-meals", async (req, res) => {
   try {
-    const now = new Date().toISOString();
-    const meals = await knex("Meal").where("when", "<", now);
-    res.json(meals);
+    const pastMeals = await knex.raw("SELECT * FROM Meal WHERE `when` < ?", [
+      currentDateTime(),
+    ]);
+    res.json(pastMeals[0]); // Return the rows
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: "An error occurred" });
   }
 });
 
+// Route 3: /all-meals
 app.get("/all-meals", async (req, res) => {
   try {
-    const allMeals = await knex("meal").select("*");
-    res.json(allMeals);
+    const allMeals = await knex.raw("SELECT * FROM Meal ORDER BY id ASC");
+    res.json(allMeals[0]); // Return the rows
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: "An error occurred" });
   }
 });
 
-app.get(
-  "/first-meal",
-  async (req, res) => {
-    try {
-      const firstMeal = await knex("Meal").orderBy("id", "asc").limit(1);
-      if (firstMeal.length === 0) {
-        return handleNoMeals(res);
-      }
-      res.json(firstMeal);
-    } catch (error) {
-      next(error);
+// Route 4: /first-meal
+app.get("/first-meal", async (req, res) => {
+  try {
+    const firstMeal = await knex.raw(
+      "SELECT * FROM Meal ORDER BY id ASC LIMIT 1"
+    );
+    if (firstMeal[0].length === 0) {
+      res.status(404).json({ message: "No meals found" });
+    } else {
+      res.json(firstMeal[0][0]); // Return the first row
     }
-  },
-  handleNoData,
-  (req, res) => {
-    res.json(req.data);
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred" });
   }
-);
+});
 
-app.get(
-  "/last-meal",
-  async (req, res) => {
-    try {
-      const lastMeal = await knex("Meal").orderBy("id", "desc").limit(1);
-      if (lastMeal.length === 0) return handleNoMeals(res);
-      res.json(lastMeal);
-    } catch (error) {
-      next(error);
+// Route 5: /last-meal
+app.get("/last-meal", async (req, res) => {
+  try {
+    const lastMeal = await knex.raw(
+      "SELECT * FROM Meal ORDER BY id DESC LIMIT 1"
+    );
+    if (lastMeal[0].length === 0) {
+      res.status(404).json({ message: "No meals found" });
+    } else {
+      res.json(lastMeal[0][0]); // Return the last row
     }
-  },
-  handleNoData,
-  (req, res) => {
-    res.json(req.data);
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred" });
   }
-);
+});
 
 // This nested router example can also be replaced with your own sub-router
 apiRouter.use("/nested", nestedRouter);
 
-app.use(errorHandler);
 app.use("/api", apiRouter);
 
 app.listen(process.env.PORT, () => {
