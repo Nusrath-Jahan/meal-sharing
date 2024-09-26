@@ -2,11 +2,14 @@ import "dotenv/config";
 import express from "express";
 import knex from "./database_client.js";
 import nestedRouter from "./routers/nested.js";
-
+import mealsRouter from './routers/meals.js';
+import reservationsRouter from './routers/reservations.js';
 
 const currentDateTime = () => new Date().toISOString();
 
 const app = express();
+
+app.use(express.json());
 
 const apiRouter = express.Router();
 
@@ -80,6 +83,9 @@ app.get("/last-meal", async (req, res) => {
 apiRouter.use("/nested", nestedRouter);
 
 app.use("/api", apiRouter);
+
+app.use('/api/meals', mealsRouter);
+app.use('/api/reservations', reservationsRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`API listening on port ${process.env.PORT}`);
