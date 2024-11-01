@@ -10,7 +10,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <HomePage />,
   },
-  // This route can be removed and replaced with your own page
+
   {
     path: "/nested",
     element: <TestPage />,
@@ -20,5 +20,5 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
