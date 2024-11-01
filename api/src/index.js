@@ -2,14 +2,22 @@ import "dotenv/config";
 import express from "express";
 import knex from "./database_client.js";
 import nestedRouter from "./routers/nested.js";
-import mealsRouter from './routers/meals.js';
-import reservationsRouter from './routers/reservations.js';
-import reviewsRouter from './routers/reviews.js';
+import mealsRouter from "./routers/meals.js";
+import reservationsRouter from "./routers/reservations.js";
+import reviewsRouter from "./routers/reviews.js";
+import cors from "cors";
 
+const PORT = process.env.PORT || 5000;
 const currentDateTime = () => new Date().toISOString();
 
 const app = express();
+// Enable CORS for your frontend
+const corsOptions = {
+  origin: "http://localhost:3000", // The URL of your frontend
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const apiRouter = express.Router();
@@ -80,15 +88,14 @@ app.get("/last-meal", async (req, res) => {
   }
 });
 
-// This nested router example can also be replaced with your own sub-router
 apiRouter.use("/nested", nestedRouter);
 
 app.use("/api", apiRouter);
 
-app.use('/api/meals', mealsRouter);
-app.use('/api/reservations', reservationsRouter);
-app.use('/api', reviewsRouter);
+app.use("/api/meals", mealsRouter);
+app.use("/api/reservations", reservationsRouter);
+app.use("/api", reviewsRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`API listening on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
