@@ -1,19 +1,28 @@
-import React from "react";
-import hyfLogo from "../../assets/hyf.svg";
-import "./HomePage.css";
+"use client";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import MealsList from "../MealsList";
+import './HomePage.css';
+const Home = () => {
+  const [meals, setMeals] = useState([]);
 
-// Feel free to replace the content of this component with your own
-function HomePage() {
+  useEffect(() => {
+    // Fetch meals from the API
+    fetch("http://localhost:3001/api/meals")
+      .then((response) => response.json())
+      .then((data) => setMeals(data));
+  }, []);
+
   return (
-    <>
-      <a href="https://www.hackyourfuture.dk/" target="_blank" className="link">
-        <img src={hyfLogo} alt="HackYourFuture logo" className="logo" />
-      </a>
-      <a href="/nested" className="link">
-        <span className="message">Go to the nested page</span>
-      </a>
-    </>
+    <div>
+      <h1>Welcome to Meal Sharing</h1>
+      <h2>Enjoy delicious meals with your loved ones</h2>
+      <MealsList meals={meals.slice(0, 3)} />
+      <Link to="/meals">
+        <button>See More Meals</button>
+      </Link>
+    </div>
   );
-}
+};
 
-export default HomePage;
+export default Home;
