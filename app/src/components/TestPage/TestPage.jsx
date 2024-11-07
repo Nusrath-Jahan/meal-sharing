@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../api";
 
-// This page can be deleted once you add your own page
 function TestPage() {
   const [message, setMessage] = useState("");
 
