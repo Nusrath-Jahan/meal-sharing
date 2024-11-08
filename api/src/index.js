@@ -4,6 +4,7 @@ import knex from "./database_client.js";
 import nestedRouter from "./routers/nested.js";
 import mealsRouter from './routers/meals.js';
 import reservationsRouter from './routers/reservations.js';
+import reviewsRouter from './routers/reviews.js';
 
 const currentDateTime = () => new Date().toISOString();
 
@@ -86,6 +87,7 @@ app.use("/api", apiRouter);
 
 app.use('/api/meals', mealsRouter);
 app.use('/api/reservations', reservationsRouter);
+app.use('/api', reviewsRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`API listening on port ${process.env.PORT}`);
