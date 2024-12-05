@@ -1,11 +1,19 @@
 import express from "express";
 import knex from "../database_client.js";
-
 const router = express.Router();
 
 router.get("/meals", async (req, res) => {
   try {
-    let query = knex("meal").select("*");
+    let query = knex("meal")
+      .select(
+        "meal.id",
+        "meal.title",
+        "meal.max_reservations",
+        "meal.reserved_spots"
+      )
+      .leftJoin("reservation", "meal.id", "=", "reservation.meal_id")
+      .sum("reservation.number_of_guests as sum_of_guests")
+      .groupBy("meal.id", "meal.title", "meal.max_reservations");
 
     // Filter by maxPrice
     if (req.query.maxPrice) {
@@ -14,15 +22,9 @@ router.get("/meals", async (req, res) => {
 
     // Filter by availableReservations
     if (req.query.availableReservations) {
-      const available = req.query.availableReservations === "true";
-      query = query
-        .leftJoin("reservations", "meals.id", "reservations.meal_id")
-        .groupBy("meals.id")
-        .havingRaw(
-          available
-            ? "meals.max_reservations > COUNT(reservations.id)"
-            : "meals.max_reservations <= COUNT(reservations.id)"
-        );
+      query = query.having(
+        knex.raw("sum_of_guests < ??", ["meal.max_reservations"])
+      );
     }
 
     // Filter by title
@@ -52,7 +54,20 @@ router.get("/meals", async (req, res) => {
     }
 
     const meals = await query;
-    res.json(meals);
+    // Calculate available spots for each meal
+    meals.forEach((meal) => {
+      meal.available_spots = meal.max_reservations - meal.sum_of_guests;
+    });
+
+    // Calculate total available spots for all meals
+    const totalAvailableSpots = meals.reduce(
+      (total, meal) => total + meal.available_spots,
+      0
+    );
+    res.json({
+      meals,
+      totalAvailableSpots,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -118,6 +133,50 @@ router.delete("/:id", async (req, res) => {
       res.json({ message: "Meal deleted" });
     } else {
       res.status(404).json({ message: "Meal not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/meals
+router.get("/", async (req, res) => {
+  try {
+    const { title } = req.query;
+
+    // Base query to select all meals
+    let query = knex("meals").select("*");
+
+    // If title query is provided, filter the meals based on the title
+    if (title) {
+      query = query.where("title", "like", `%${title}%`);
+    }
+
+    const meals = await query;
+    res.json(meals);
+  } catch (error) {
+    console.error("Error fetching meals:", error);
+    res.status(500).json({ error: "Failed to fetch meals" });
+  }
+});
+
+// GET /api/meals/:id - Returns a meal by ID with available spots
+router.get("/:id", async (req, res) => {
+  try {
+    const meal = await knex("meal")
+      .select("meal.id", "meal.title", "meal.max_reservations")
+      .where("meal.id", req.params.id)
+      .leftJoin("reservation", "meal.id", "=", "reservation.meal_id")
+      .sum("reservation.number_of_guests as sum_of_guests")
+      .groupBy("meal.id", "meal.title", "meal.max_reservations")
+      .first();
+
+    if (meal) {
+      // Calculate available spots
+      meal.available_spots = meal.max_reservations - meal.sum_of_guests;
+      res.json(meal);
+    } else {
+      res.status(404).json({ error: "Meal not found" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

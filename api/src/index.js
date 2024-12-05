@@ -2,14 +2,22 @@ import "dotenv/config";
 import express from "express";
 import knex from "./database_client.js";
 import nestedRouter from "./routers/nested.js";
-import mealsRouter from './routers/meals.js';
-import reservationsRouter from './routers/reservations.js';
-import reviewsRouter from './routers/reviews.js';
+import mealsRouter from "./routers/meals.js";
+import reservationsRouter from "./routers/reservations.js";
+import reviewsRouter from "./routers/reviews.js";
+import cors from "cors";
 
+const PORT = process.env.PORT || 5000;
 const currentDateTime = () => new Date().toISOString();
 
 const app = express();
+// Enable CORS for frontend
+const corsOptions = {
+  origin: "http://localhost:3000", // The URL of  frontend
+  optionsSuccessStatus: 200,
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const apiRouter = express.Router();
@@ -32,7 +40,7 @@ app.get("/past-meals", async (req, res) => {
     const pastMeals = await knex.raw("SELECT * FROM Meal WHERE `when` < ?", [
       currentDateTime(),
     ]);
-    res.json(pastMeals[0]); // Return the rows
+    res.json(pastMeals[0]); 
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
@@ -42,7 +50,7 @@ app.get("/past-meals", async (req, res) => {
 app.get("/all-meals", async (req, res) => {
   try {
     const allMeals = await knex.raw("SELECT * FROM Meal ORDER BY id ASC");
-    res.json(allMeals[0]); // Return the rows
+    res.json(allMeals[0]); 
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
@@ -57,7 +65,7 @@ app.get("/first-meal", async (req, res) => {
     if (firstMeal[0].length === 0) {
       res.status(404).json({ message: "No meals found" });
     } else {
-      res.json(firstMeal[0][0]); // Return the first row
+      res.json(firstMeal[0][0]); 
     }
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
@@ -73,22 +81,23 @@ app.get("/last-meal", async (req, res) => {
     if (lastMeal[0].length === 0) {
       res.status(404).json({ message: "No meals found" });
     } else {
-      res.json(lastMeal[0][0]); // Return the last row
+      res.json(lastMeal[0][0]); 
     }
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
 });
 
-// This nested router example can also be replaced with your own sub-router
+
+
 apiRouter.use("/nested", nestedRouter);
 
 app.use("/api", apiRouter);
 
-app.use('/api/meals', mealsRouter);
-app.use('/api/reservations', reservationsRouter);
-app.use('/api', reviewsRouter);
+app.use("/api/meals", mealsRouter);
+app.use("/api/reservations", reservationsRouter);
+app.use("/api/reviews", reviewsRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`API listening on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

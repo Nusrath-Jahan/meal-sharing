@@ -1,24 +1,61 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./components/HomePage/HomePage.jsx";
 import TestPage from "./components/TestPage/TestPage.jsx";
+import MealsList from "./frontend/components/MealsList.jsx";
+import FrontPage from "./frontend/components/FrontPage.jsx";
+import Reservation from "./frontend/components/Reservation.jsx";
+import ReviewForm from "./frontend/components/ReviewForms.jsx";
+import Layout from "./LayOut";
 import "./main.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: (
+      <Layout>
+        <FrontPage />
+      </Layout>
+    ),
   },
-  // This route can be removed and replaced with your own page
+  {
+    path: "/reservation/:id",
+    element: (
+      <Layout>
+        <Reservation />
+      </Layout>
+    ),
+  },
+
+  {
+    path: "/all-meals",
+    element: (
+      <Layout>
+        <MealsList />
+      </Layout>
+    ),
+  },
+  {
+    path: "/review/:id",
+    element: (
+      <Layout>
+        <ReviewForm />
+      </Layout>
+    ),
+  },
+
   {
     path: "/nested",
-    element: <TestPage />,
+    element: (
+      <Layout>
+        <TestPage />
+      </Layout>
+    ),
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </React.StrictMode>
 );

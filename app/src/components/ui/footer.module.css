@@ -1,0 +1,34 @@
+.footerContainer {
+  min-height: 70vh;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.footer {
+  position: absolute;
+  background-color: #e3f79d;
+  color: rgb(12, 12, 12);
+  font-size: 0.9rem;
+  padding: 1rem;
+  text-align: center;
+  bottom: 0;
+  width: 100%;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  gap: 1rem;
+}
+
+.footerLinks a {
+  color: rgb(9, 8, 8);
+  text-decoration: none;
+}
+
+.footerLinks a:hover {
+  text-decoration: underline;
+}

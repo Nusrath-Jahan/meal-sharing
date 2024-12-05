@@ -30,7 +30,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST /api/reservations - Adds a new reservation to the database
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const [newReservation] = await knex("reservation")
       .insert(req.body)

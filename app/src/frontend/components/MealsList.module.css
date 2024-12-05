@@ -1,0 +1,76 @@
+.meal-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 3rem;
+  margin: 30px 150px;
+  position: relative;
+
+  width: 80%;
+}
+
+.meals {
+  text-align: center;
+}
+
+.meals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}
+
+/* Style for the search form and sorting controls container */
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px; /* Adds some space between the search and sorting controls */
+  padding: 10px;
+  background-color: #cceff2;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Search input styles */
+.controls-container input[type="text"] {
+  flex: 1; /* Make the input take as much space as possible */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Search button styles */
+.controls-container button {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.controls-container button:hover {
+  background-color: #218838;
+}
+
+/* Sorting controls container */
+.sorting-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.sorting-controls select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.sorting-controls label {
+  font-size: 16px;
+  font-weight: bold;
+}
