@@ -3,21 +3,21 @@ import Meal from "./Meal";
 import styles from "./MealsList.module.css";
 
 function MealsList() {
-  const [meals, setMeals] = useState([]); 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState(""); 
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(""); 
+  const [meals, setMeals] = useState([]); // State to store fetched meals
+  const [loading, setLoading] = useState(true); // State for loading indicator
+  const [error, setError] = useState(null); // State for error messages
+  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(""); // State for debounced search term
 
   // State for sorting
-  const [sortField, setSortField] = useState("title"); 
-  const [sortDirection, setSortDirection] = useState("asc"); 
+  const [sortField, setSortField] = useState("title"); // Default sorting field
+  const [sortDirection, setSortDirection] = useState("asc"); // Default sorting direction
 
   // Debouncing search input
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-    }, 500); 
+    }, 500); // Wait for 500ms after the user stops typing
 
     // Cleanup the timeout when the user types again
     return () => clearTimeout(timeoutId);
@@ -33,7 +33,7 @@ function MealsList() {
       let url = "http://localhost:3001/api/meals/meals";
       let queryParams = [];
 
-     
+      // If searchQuery exists, add it to the query params
       if (searchQuery) {
         queryParams.push(`title=${searchQuery}`);
       }
@@ -46,53 +46,53 @@ function MealsList() {
         url += `?${queryParams.join("&")}`;
       }
 
-      const response = await fetch(url); 
+      const response = await fetch(url); // Fetch meals with the query params
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const data = await response.json();
       console.log(data);
-      setMeals(data.meals); 
+      setMeals(data.meals); // Update meals state with fetched data
     } catch (error) {
       console.error("Failed to fetch meals:", error);
       setError("Failed to load meals. Please try again later.");
     } finally {
-      setLoading(false); 
+      setLoading(false); // Hide loading indicator
     }
   };
 
-  
+  // Initial fetch on component mount (without search term)
   useEffect(() => {
-    fetchMeals(); 
+    fetchMeals(); // Fetch all meals on component load
   }, []);
 
-  
+  // Fetch meals when the debounced search term changes
   useEffect(() => {
     if (debouncedSearchTerm !== "") {
-      fetchMeals(debouncedSearchTerm); 
+      fetchMeals(debouncedSearchTerm); // Fetch meals based on the debounced search term
     } else {
-      fetchMeals(); 
+      fetchMeals(); // Fetch all meals if no search term
     }
-  }, [debouncedSearchTerm, sortField, sortDirection]);
+  }, [debouncedSearchTerm, sortField, sortDirection]); // Re-fetch meals if sortField or sortDirection changes
 
-  
+  // Handle form submission to search for meals
   const handleSearch = (e) => {
-    e.preventDefault(); 
+    e.preventDefault(); // Prevent page reload on form submission
   };
 
   if (loading) {
-    return <p>Loading meals...</p>; 
+    return <p>Loading meals...</p>; // Show loading indicator while fetching
   }
 
   if (error) {
-    return <p>{error}</p>; 
+    return <p>{error}</p>; // Show error message if fetching fails
   }
 
   return (
     <>
-     
-{/* Search Form  */}
+      {/* <h2 className={styles["meals"]}>Meals</h2> */}
+{/* Search Form and Sorting Controls on the Same Line */}
 <div className={styles["controls-container"]}>
     <form onSubmit={handleSearch}>
       <input
@@ -139,7 +139,6 @@ function MealsList() {
             <p>No meals found</p>
           )}
         </div>
-        
       </div>
     </>
   );

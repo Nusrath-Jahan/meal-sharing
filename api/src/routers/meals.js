@@ -8,6 +8,7 @@ router.get("/meals", async (req, res) => {
       .select(
         "meal.id",
         "meal.title",
+        "meal.price",
         "meal.max_reservations",
         "meal.reserved_spots"
       )
