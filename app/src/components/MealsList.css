@@ -1,8 +1,0 @@
-
-.meals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Adjust the minmax values  */
-    gap: 16px; /* Space between cards */
-    padding: 16px; /* Overall padding */
-  }
-  

@@ -1,0 +1,38 @@
+.frontPage-container {
+  font-family: Arial, sans-serif;
+  padding: 1rem;
+  color: #333;
+}
+.mealsPreview {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.mealsGrid {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  margin-top: 1.5rem;
+  gap: 2rem;
+}
+
+.title {
+  text-align: center;
+  font-family: cursive;
+  font-size: 2.5rem;
+}
+
+.allMeal-btn {
+  background-color: #3ec0a4;
+  color: #ffffff;
+  margin-top: 3rem;
+  font-size: 1rem;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}

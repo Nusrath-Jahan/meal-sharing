@@ -3,8 +3,8 @@ import knex from "../database_client.js";
 
 const router = express.Router();
 
-// GET /api - all reviews
-router.get("/reviews", async (req, res) => {
+// GET /api/reviews/ - all reviews
+router.get("/", async (req, res) => {
   try {
     const reviews = await knex("review").select("*");
     res.json(reviews);
@@ -13,7 +13,7 @@ router.get("/reviews", async (req, res) => {
   }
 });
 
-// Get /api -reviews for a specific meal
+// Get /api/reviews/ -reviews for a specific meal
 router.get("/meals/:meal_id/reviews", async (req, res) => {
   try {
     const { meal_id } = req.params;
@@ -24,8 +24,8 @@ router.get("/meals/:meal_id/reviews", async (req, res) => {
   }
 });
 
-// Add a new review
-router.post("/reviews", async (req, res) => {
+// /api/reviews/ Add a new review
+router.post("/", async (req, res) => {
   try {
     const newReview = req.body;
     const [id] = await knex("review").insert(newReview);

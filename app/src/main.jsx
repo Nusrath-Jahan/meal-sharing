@@ -1,29 +1,61 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ReactDOM from "react-dom/client";
-import Home from "./components/HomePage/HomePage.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TestPage from "./components/TestPage/TestPage.jsx";
+import MealsList from "./frontend/components/MealsList.jsx";
+import FrontPage from "./frontend/components/FrontPage.jsx";
+import Reservation from "./frontend/components/Reservation.jsx";
+import ReviewForm from "./frontend/components/ReviewForms.jsx";
+import Layout from "./LayOut";
 import "./main.css";
-import Meals from "./components/Meal";
-import MealDetail from "./components/MealDetail";
 
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/TestPage" element={<TestPage />} />
-          <Route path="/meals" element={<Meals />} />
-          <Route path="/meals/:id" element={<MealDetail />} />
-        </Routes>
-      </div>
-    </Router>
-  );
-}
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Layout>
+        <FrontPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/reservation/:id",
+    element: (
+      <Layout>
+        <Reservation />
+      </Layout>
+    ),
+  },
+
+  {
+    path: "/all-meals",
+    element: (
+      <Layout>
+        <MealsList />
+      </Layout>
+    ),
+  },
+  {
+    path: "/review/:id",
+    element: (
+      <Layout>
+        <ReviewForm />
+      </Layout>
+    ),
+  },
+
+  {
+    path: "/nested",
+    element: (
+      <Layout>
+        <TestPage />
+      </Layout>
+    ),
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

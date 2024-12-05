@@ -11,9 +11,9 @@ const PORT = process.env.PORT || 5000;
 const currentDateTime = () => new Date().toISOString();
 
 const app = express();
-// Enable CORS for your frontend
+// Enable CORS for frontend
 const corsOptions = {
-  origin: "http://localhost:3000", // The URL of your frontend
+  origin: "http://localhost:3000", // The URL of  frontend
   optionsSuccessStatus: 200,
 };
 
@@ -88,13 +88,15 @@ app.get("/last-meal", async (req, res) => {
   }
 });
 
+
+
 apiRouter.use("/nested", nestedRouter);
 
 app.use("/api", apiRouter);
 
 app.use("/api/meals", mealsRouter);
 app.use("/api/reservations", reservationsRouter);
-app.use("/api", reviewsRouter);
+app.use("/api/reviews", reviewsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
