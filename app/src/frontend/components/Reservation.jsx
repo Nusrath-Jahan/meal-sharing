@@ -16,7 +16,9 @@ const Reservation = () => {
   useEffect(() => {
     const fetchMeal = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/meals/${id}`);
+        const response = await fetch(
+          `http://meal-sharing-8vsd.onrender.com/api/meals/${id}`
+        );
         if (!response.ok) throw new Error("Failed to fetch meal details");
         const data = await response.json();
         setMeal(data);
@@ -38,7 +40,7 @@ const Reservation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/api/reservations/", {
+      const response = await fetch("http://meal-sharing-8vsd.onrender.com/api/reservations/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -64,7 +66,6 @@ const Reservation = () => {
       <h2>{meal.title}</h2>
       {/* <p>{meal.description}</p>
       <p>{meal.price}</p> */}
-      
 
       <div>
         <h3 className={styles["reservation-text"]}>Make a Reservation</h3>

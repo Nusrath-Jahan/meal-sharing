@@ -30,7 +30,8 @@ function MealsList() {
 
     try {
       // Construct the API endpoint with sorting and search parameters
-      let url = "http://localhost:3001/api/meals/meals";
+      // let url = "http://localhost:3001/api/meals/meals";
+      let url = "https://meal-sharing-8vsd.onrender.com/api/meals/meals";
       let queryParams = [];
 
       // If searchQuery exists, add it to the query params

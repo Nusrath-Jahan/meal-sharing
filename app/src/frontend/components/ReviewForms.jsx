@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./ReviewForm.module.css";
 
 const ReviewForm = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
   const [review, setReview] = useState({
     title: "",
@@ -21,22 +20,24 @@ const ReviewForm = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/api/reviews/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          ...review, 
-          meal_id: id, 
-          created_date: formattedDate
-        }),
-      });
+      const response = await fetch(
+        "http://meal-sharing-8vsd.onrender.com/api/reviews/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...review,
+            meal_id: id,
+            created_date: formattedDate,
+          }),
+        }
+      );
       if (!response.ok) throw new Error("Failed to submit review");
       alert("Review submitted successfully!");
       navigate(`/all-meals`);
     } catch (error) {
       alert("Error submitting review. Please try again.");
     }
-
   };
 
   return (
