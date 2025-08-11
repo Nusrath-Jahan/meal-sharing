@@ -17,7 +17,8 @@ const Reservation = () => {
     const fetchMeal = async () => {
       try {
         const response = await fetch(
-          `http://meal-sharing-8vsd.onrender.com/api/meals/${id}`
+          `${import.meta.env.VITE_API_URL}/api/meals/${id}`
+          
         );
         if (!response.ok) throw new Error("Failed to fetch meal details");
         const data = await response.json();
@@ -40,8 +41,9 @@ const Reservation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://meal-sharing-8vsd.onrender.com/api/reservations/", {
-        method: "POST",
+      
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/reservations/`, {
+        method: "POST", 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contact_name: reservation.contact_name,

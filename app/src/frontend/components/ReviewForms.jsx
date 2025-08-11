@@ -21,7 +21,7 @@ const ReviewForm = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://meal-sharing-8vsd.onrender.com/api/reviews/",
+         `${import.meta.env.VITE_API_URL}/api/reviews/`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
