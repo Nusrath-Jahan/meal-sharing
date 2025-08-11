@@ -13,8 +13,8 @@ const currentDateTime = () => new Date().toISOString();
 const app = express();
 // Enable CORS for frontend
 const corsOptions = {
-  //origin: "http://localhost:3000",  
-  origin: "https://your-netlify-site.netlify.app",
+  //origin: "http://localhost:3000",
+  origin: "https://meal-share-app.netlify.app",
   optionsSuccessStatus: 200,
 };
 
@@ -41,7 +41,7 @@ app.get("/past-meals", async (req, res) => {
     const pastMeals = await knex.raw("SELECT * FROM Meal WHERE `when` < ?", [
       currentDateTime(),
     ]);
-    res.json(pastMeals[0]); 
+    res.json(pastMeals[0]);
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
@@ -51,7 +51,7 @@ app.get("/past-meals", async (req, res) => {
 app.get("/all-meals", async (req, res) => {
   try {
     const allMeals = await knex.raw("SELECT * FROM Meal ORDER BY id ASC");
-    res.json(allMeals[0]); 
+    res.json(allMeals[0]);
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
@@ -66,7 +66,7 @@ app.get("/first-meal", async (req, res) => {
     if (firstMeal[0].length === 0) {
       res.status(404).json({ message: "No meals found" });
     } else {
-      res.json(firstMeal[0][0]); 
+      res.json(firstMeal[0][0]);
     }
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
@@ -82,14 +82,12 @@ app.get("/last-meal", async (req, res) => {
     if (lastMeal[0].length === 0) {
       res.status(404).json({ message: "No meals found" });
     } else {
-      res.json(lastMeal[0][0]); 
+      res.json(lastMeal[0][0]);
     }
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
 });
-
-
 
 apiRouter.use("/nested", nestedRouter);
 
