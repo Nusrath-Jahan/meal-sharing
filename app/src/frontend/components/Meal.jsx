@@ -6,7 +6,7 @@ const Meal = ({ meal, variant = "default" , showReviewbtn = true, showReservatio
   const navigate = useNavigate();
 
   const imagePath = meal?.title
-    ? `/public/images/${meal.title.toLowerCase().replace(/ /g, "_")}.jpg`
+    ? `/app/public/images/${meal.title.toLowerCase().replace(/ /g, "_")}.jpg`
     : "";
 
   return (

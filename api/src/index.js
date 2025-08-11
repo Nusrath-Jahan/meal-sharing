@@ -13,7 +13,6 @@ const currentDateTime = () => new Date().toISOString();
 const app = express();
 // Enable CORS for frontend
 const corsOptions = {
-  //origin: "http://localhost:3000",
   origin: "https://meal-share-app.netlify.app",
   optionsSuccessStatus: 200,
 };
@@ -29,7 +28,7 @@ app.get("/future-meals", async (req, res) => {
     const futureMeals = await knex.raw("SELECT * FROM Meal WHERE `when` > ?", [
       currentDateTime(),
     ]);
-    res.json(futureMeals[0]); // Return the rows
+    res.json(futureMeals[0]);
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
