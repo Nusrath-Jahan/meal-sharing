@@ -13,7 +13,8 @@ const currentDateTime = () => new Date().toISOString();
 const app = express();
 // Enable CORS for frontend
 const corsOptions = {
-  origin: "http://localhost:3000", // The URL of  frontend
+  //origin: "http://localhost:3000",  
+  origin: "https://your-netlify-site.netlify.app",
   optionsSuccessStatus: 200,
 };
 
