@@ -6,11 +6,20 @@ import mealsRouter from "./routers/meals.js";
 import reservationsRouter from "./routers/reservations.js";
 import reviewsRouter from "./routers/reviews.js";
 import cors from "cors";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 5000;
 const currentDateTime = () => new Date().toISOString();
 
 const app = express();
+
+// Serve images statically from app/public/images
+app.use('/images', express.static(path.join(__dirname, '../app/public/images')));
+
 // Enable CORS for frontend
 const corsOptions = {
   origin: "https://meal-share-app.netlify.app",

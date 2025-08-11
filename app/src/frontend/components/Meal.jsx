@@ -5,9 +5,11 @@ import styles from "./Meal.module.css";
 const Meal = ({ meal, variant = "default" , showReviewbtn = true, showReservationbtn = true }) => {
   const navigate = useNavigate();
 
-  const imagePath = meal?.title
-    ? `/app/public/images/${meal.title.toLowerCase().replace(/ /g, "_")}.jpg`
-    : "";
+  // const imagePath = meal?.title
+  //   ? `public/images/${meal.title.toLowerCase().replace(/ /g, "_")}.jpg`
+  //   : "";
+    const imagePath = `https://meal-sharing-8vsd.onrender.com/images/${meal.title.toLowerCase().replace(/ /g, "_")}.jpg`;
+
 
   return (
     <div className={`${styles["meal-card"]} ${styles[`meal-card--${variant}`]}`}>
