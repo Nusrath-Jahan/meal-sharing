@@ -6,8 +6,8 @@ import mealsRouter from "./routers/meals.js";
 import reservationsRouter from "./routers/reservations.js";
 import reviewsRouter from "./routers/reviews.js";
 import cors from "cors";
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +18,10 @@ const currentDateTime = () => new Date().toISOString();
 const app = express();
 
 // Serve images statically from app/public/images
-app.use('/images', express.static(path.join(__dirname, '../app/public/images')));
+app.use(
+  "/images",
+  express.static(path.join(__dirname, "../app/public/images"))
+);
 
 // Enable CORS for frontend
 const corsOptions = {
@@ -30,14 +33,19 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 const apiRouter = express.Router();
-// Route: GET /api/all-meals
+// For All food : /api/all-meals
 apiRouter.get("/all-meals", async (req, res) => {
   try {
-    const allMeals = await knex("Meal").select("*").orderBy("id", "asc");
-    res.json(allMeals);
+    const allMeals = await knex.raw("SELECT * FROM `Meal` ORDER BY id ASC");
+
+    if (!allMeals[0]) {
+      return res.status(404).json({ error: "No meals found" });
+    }
+
+    res.json(allMeals[0]);
   } catch (error) {
-    console.error("Error fetching all meals:", error);
-    res.status(500).json({ error: "An error occurred while fetching meals" });
+    console.error("Error in /all-meals route:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -71,11 +79,10 @@ app.get("/past-meals", async (req, res) => {
 //     const allMeals = await knex("Meal").select("*").orderBy("id", "asc");
 //     res.json(allMeals);
 //   } catch (error) {
-//     console.error(error); 
+//     console.error(error);
 //     res.status(500).json({ error: "An error occurred" });
 //   }
 // });
-
 
 // Route 4: /first-meal
 app.get("/first-meal", async (req, res) => {
