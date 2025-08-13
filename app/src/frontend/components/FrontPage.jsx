@@ -21,7 +21,7 @@ function HomePage() {
         setMeals(data.slice(0, 3)); 
       } catch (err) {
         console.error("Failed to fetch all meals from backend:", err);
-        setError("Failed to load meals.");
+        setError("Failed to load meals from the backend.");
       } finally {
         setLoading(false);
       }
