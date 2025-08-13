@@ -33,19 +33,15 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 const apiRouter = express.Router();
-// For All food : /api/all-meals
-apiRouter.get("/all-meals", async (req, res) => {
+// Route All food : /all-meals
+
+app.get("/all-meals", async (req, res) => {
   try {
-    const allMeals = await knex.raw("SELECT * FROM `Meal` ORDER BY id ASC");
-
-    if (!allMeals[0]) {
-      return res.status(404).json({ error: "No meals found" });
-    }
-
-    res.json(allMeals[0]);
+    const allMeals = await knex("meal").select("*").orderBy("id", "asc");
+    res.json(allMeals);
   } catch (error) {
-    console.error("Error in /all-meals route:", error);
-    res.status(500).json({ error: error.message });
+    console.error("Failed to fetch all meals:", error);
+    res.status(500).json({ error: "An error occurred while fetching meals." });
   }
 });
 
