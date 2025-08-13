@@ -11,7 +11,7 @@ import "./main.css";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/all-meals",
     element: (
       <Layout>
         <FrontPage />
