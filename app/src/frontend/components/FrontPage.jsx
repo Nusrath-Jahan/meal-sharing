@@ -12,9 +12,7 @@ function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/meals/meals`
-        );
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/all-meals`);
         if (!res.ok) {
           throw new Error(`HTTP status error: ${res.status}`);
         }
