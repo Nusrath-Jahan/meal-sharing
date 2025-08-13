@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Meal from "./Meal"; 
+import Meal from "./Meal";
 import styles from "./FrontPage.module.css";
 
 function HomePage() {
@@ -13,12 +13,13 @@ function HomePage() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/meals/meals`);
+          `${import.meta.env.VITE_API_URL}/api/meals/meals`
+        );
         if (!res.ok) {
           throw new Error(`HTTP status error: ${res.status}`);
         }
         const data = await res.json();
-        setMeals(data.slice(0, 3)); 
+        setMeals(data.slice(0, 3));
       } catch (err) {
         console.error("Failed to fetch all meals from backend:", err);
         setError("Failed to load meals from the backend.");
@@ -40,18 +41,20 @@ function HomePage() {
 
   return (
     <div className={styles["frontPage-container"]}>
-      <header className={styles["header"]}>
-      </header>
+      <header className={styles["header"]}></header>
 
       <main className={styles["main-content"]}>
         <h1 className={styles["title"]}>Meal Sharing</h1>
-        
 
         <div className={styles["mealsPreview"]}>
-         
           <div className={styles["mealsGrid"]}>
             {meals.map((meal, index) => (
-              <Meal key={index} meal={meal} showReviewButton={false}  variant="home" />
+              <Meal
+                key={index}
+                meal={meal}
+                showReviewButton={false}
+                variant="home"
+              />
             ))}
           </div>
           <button
