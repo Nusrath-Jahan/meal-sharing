@@ -13,7 +13,7 @@ function HomePage() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/all-meals`);
+          `${import.meta.env.VITE_API_URL}/api/all-meals`);
         if (!res.ok) {
           throw new Error(`HTTP status error: ${res.status}`);
         }

@@ -30,6 +30,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 const apiRouter = express.Router();
+// Route: GET /api/all-meals
+apiRouter.get("/all-meals", async (req, res) => {
+  try {
+    const allMeals = await knex("Meal").select("*").orderBy("id", "asc");
+    res.json(allMeals);
+  } catch (error) {
+    console.error("Error fetching all meals:", error);
+    res.status(500).json({ error: "An error occurred while fetching meals" });
+  }
+});
 
 // Route 1: /future-meals
 app.get("/future-meals", async (req, res) => {
@@ -56,15 +66,15 @@ app.get("/past-meals", async (req, res) => {
 });
 
 // Route 3: /all-meals
-app.get("/all-meals", async (req, res) => {
-  try {
-    const allMeals = await knex("Meal").select("*").orderBy("id", "asc");
-    res.json(allMeals);
-  } catch (error) {
-    console.error(error); 
-    res.status(500).json({ error: "An error occurred" });
-  }
-});
+// app.get("/all-meals", async (req, res) => {
+//   try {
+//     const allMeals = await knex("Meal").select("*").orderBy("id", "asc");
+//     res.json(allMeals);
+//   } catch (error) {
+//     console.error(error); 
+//     res.status(500).json({ error: "An error occurred" });
+//   }
+// });
 
 
 // Route 4: /first-meal
