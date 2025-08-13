@@ -30,10 +30,9 @@ function MealsList() {
 
     try {
       // Construct the API endpoint with sorting and search parameters
-      // let url = "http://localhost:3001/api/meals/meals";
+
       let url = `${import.meta.env.VITE_API_URL}/api/meals/meals`;
 
-      //let url = "https://meal-sharing-8vsd.onrender.com/api/meals/meals";
       let queryParams = [];
 
       // If searchQuery exists, add it to the query params
@@ -94,42 +93,42 @@ function MealsList() {
 
   return (
     <>
-      {/* <h2 className={styles["meals"]}>Meals</h2> */}
-{/* Search Form and Sorting Controls on the Same Line */}
-<div className={styles["controls-container"]}>
-    <form onSubmit={handleSearch}>
-      <input
-        type="text"
-        placeholder="Search meals by title"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <button type="submit">Search</button>
-    </form>
+  
+      {/* Search Form and Sorting Controls on the Same Line */}
+      <div className={styles["controls-container"]}>
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search meals by title"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
 
-    {/* Sorting Controls */}
-    <div className={styles["sorting-controls"]}>
-      <label htmlFor="sortField">Sort by:</label>
-      <select
-        id="sortField"
-        value={sortField}
-        onChange={(e) => setSortField(e.target.value)}
-      >
-        <option value="title">Title</option>
-        <option value="price">Price</option>
-      </select>
+        {/* Sorting Controls */}
+        <div className={styles["sorting-controls"]}>
+          <label htmlFor="sortField">Sort by:</label>
+          <select
+            id="sortField"
+            value={sortField}
+            onChange={(e) => setSortField(e.target.value)}
+          >
+            <option value="title">Title</option>
+            <option value="price">Price</option>
+          </select>
 
-      <label htmlFor="sortDirection">Direction:</label>
-      <select
-        id="sortDirection"
-        value={sortDirection}
-        onChange={(e) => setSortDirection(e.target.value)}
-      >
-        <option value="asc">Ascending</option>
-        <option value="desc">Descending</option>
-      </select>
-    </div>
-  </div>
+          <label htmlFor="sortDirection">Direction:</label>
+          <select
+            id="sortDirection"
+            value={sortDirection}
+            onChange={(e) => setSortDirection(e.target.value)}
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
 
       {/* Meal List */}
       <div className={styles["meal-container"]}>

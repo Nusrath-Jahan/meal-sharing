@@ -58,12 +58,14 @@ app.get("/past-meals", async (req, res) => {
 // Route 3: /all-meals
 app.get("/all-meals", async (req, res) => {
   try {
-    const allMeals = await knex.raw("SELECT * FROM Meal ORDER BY id ASC");
-    res.json(allMeals[0]);
+    const allMeals = await knex("Meal").select("*").orderBy("id", "asc");
+    res.json(allMeals);
   } catch (error) {
+    console.error(error); 
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
 
 // Route 4: /first-meal
 app.get("/first-meal", async (req, res) => {
