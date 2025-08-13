@@ -10,12 +10,9 @@ const Meal = ({
 }) => {
   const navigate = useNavigate();
 
-  // const imagePath = meal?.title
-  //   ? `public/images/${meal.title.toLowerCase().replace(/ /g, "_")}.jpg`
-  //   : "";
+  // Construct the image path based on the meal title
+  // Assuming the images are stored in a public directory
   const imagePath = `/images/${meal.title.replace(/\s+/g, "_")}.jpg`;
-
-  //const imagePath = `https://meal-sharing-8vsd.onrender.com/public/images/${meal.title.replace(/\s+/g, "_")}.jpg`;
 
   return (
     <div
