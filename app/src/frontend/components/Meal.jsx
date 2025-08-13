@@ -13,7 +13,9 @@ const Meal = ({
   // const imagePath = meal?.title
   //   ? `public/images/${meal.title.toLowerCase().replace(/ /g, "_")}.jpg`
   //   : "";
-  const imagePath = `https://meal-sharing-8vsd.onrender.com/public/images/${meal.title.replace(/\s+/g, "_")}.jpg`;
+  const imagePath = `/images/${meal.title.replace(/\s+/g, "_")}.jpg`;
+
+  //const imagePath = `https://meal-sharing-8vsd.onrender.com/public/images/${meal.title.replace(/\s+/g, "_")}.jpg`;
 
   return (
     <div
